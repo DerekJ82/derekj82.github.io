@@ -81,15 +81,27 @@
         .task-card {
             background: #f8f9fa;
             border-radius: 10px;
-            padding: 20px;
             border-left: 5px solid #4facfe;
             transition: all 0.3s ease;
             position: relative;
+            cursor: pointer;
+            overflow: hidden;
         }
 
         .task-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .task-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-info {
+            flex: 1;
         }
 
         .task-title {
@@ -107,6 +119,67 @@
             font-size: 0.9em;
             display: inline-block;
             font-weight: 500;
+        }
+
+        .expand-icon {
+            font-size: 1.2em;
+            color: #666;
+            transition: transform 0.3s ease;
+        }
+
+        .task-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .task-links {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #fff;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .task-card.expanded .task-links {
+            max-height: 300px;
+        }
+
+        .links-content {
+            padding: 20px;
+        }
+
+        .links-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .link-item {
+            display: block;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #495057;
+            transition: all 0.2s ease;
+            border-left: 3px solid #4facfe;
+        }
+
+        .link-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            color: #333;
+        }
+
+        .link-item::before {
+            content: '🔗';
+            margin-right: 8px;
+        }
+
+        .domo-link::before {
+            content: '📊';
+            margin-right: 8px;
         }
 
         .meeting-card {
@@ -149,37 +222,18 @@
             .header h1 {
                 font-size: 2em;
             }
+
+            .task-header {
+                padding: 15px;
+            }
         }
     </style>
-
-    <script>
-      
-      const files = {
-        
-      }
-    
-
-
-      window.fs = {}
-      window.fs.readFile = (fileName) => {
-        // return array buffer
-        return new Promise((resolve) => {
-          const content = files[fileName]
-          const decoded = atob(content)
-          const arr = new Uint8Array(decoded.length)
-          for (let i = 0; i < decoded.length; i++) {
-            arr[i] = decoded.charCodeAt(i)
-          }
-          resolve(arr)
-        })
-      }
-    </script>
-    </head>
+</head>
 <body>
     <div class="container">
         <div class="header">
             <h1>📋 Work Items & Coverage</h1>
-            <p>Key Deliverables & Meeting Coverage</p>
+            <p>Key Deliverables & Meeting Coverage - Click tasks to view related files</p>
         </div>
 
         <div class="content">
@@ -187,54 +241,202 @@
             <div class="section">
                 <h2 class="section-title">📋 Key Deliverables</h2>
                 <div class="task-grid">
-                    <div class="task-card priority-high">
-                        <div class="task-title">MM Customer Growth YoY vs SMB 30-100 Customer Growth YoY</div>
-                        <span class="task-owner">Chenqi</span>
+                    <div class="task-card priority-high" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">MM Customer Growth YoY vs SMB 30-100 Customer Growth YoY</div>
+                                <span class="task-owner">Chenqi</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item domo-link">Customer Growth Analysis Dashboard</a>
+                                <a href="#" class="link-item">MM vs SMB Growth Report Template</a>
+                                <a href="#" class="link-item">Historical Growth Data</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-high">
-                        <div class="task-title">Flash Revamp</div>
-                        <span class="task-owner">Chenqi</span>
+                    <div class="task-card priority-high" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Flash Revamp</div>
+                                <span class="task-owner">Chenqi</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item">Flash Revamp Project Plan</a>
+                                <a href="#" class="link-item">Current Flash Template</a>
+                                <a href="#" class="link-item">Stakeholder Requirements Doc</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-medium">
-                        <div class="task-title">Senior Strategy Hiring</div>
-                        <span class="task-owner">Tyler</span>
+                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Senior Strategy Hiring</div>
+                                <span class="task-owner">Tyler</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item">Job Description Template</a>
+                                <a href="#" class="link-item">Interview Guide</a>
+                                <a href="#" class="link-item">Candidate Pipeline Tracker</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-medium">
-                        <div class="task-title">Public Large vs Other Public for WLS</div>
-                        <span class="task-owner">Malcolm</span>
+                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Weekly DE Update - WLN Externals</div>
+                                <span class="task-owner">Tyler</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item domo-link">WLN Externals Dashboard</a>
+                                <a href="#" class="link-item">Weekly Update Template</a>
+                                <a href="#" class="link-item">DE Metrics Tracking Sheet</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-medium">
-                        <div class="task-title">Manager Drive Review with Sales Teams</div>
-                        <span class="task-owner">Kelly</span>
+                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Public Large vs Other Public for WLS</div>
+                                <span class="task-owner">Malcolm</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item domo-link">WLS Performance Dashboard</a>
+                                <a href="#" class="link-item">Public Segment Analysis</a>
+                                <a href="#" class="link-item">Competitive Benchmarking Data</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-high">
-                        <div class="task-title">June 25th Flash Pre-Read</div>
-                        <span class="task-owner">Windy</span>
+                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Manager Drive Review with Sales Teams</div>
+                                <span class="task-owner">Kelly</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item domo-link">Sales Performance Dashboard</a>
+                                <a href="#" class="link-item">Manager Drive Results</a>
+                                <a href="#" class="link-item">Sales Team Feedback Form</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-low">
-                        <div class="task-title">July 2nd Flash Pre-Read (if required)</div>
-                        <span class="task-owner">Malcolm</span>
+                    <div class="task-card priority-high" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">June 25th Flash Pre-Read</div>
+                                <span class="task-owner">Windy</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item">Flash Pre-Read Template</a>
+                                <a href="#" class="link-item">June Data Sources</a>
+                                <a href="#" class="link-item">Previous Flash Examples</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-high">
-                        <div class="task-title">Flash Deck Updates June 26th</div>
-                        <span class="task-owner">Windy</span>
+                    <div class="task-card priority-low" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">July 2nd Flash Pre-Read (if required)</div>
+                                <span class="task-owner">Malcolm</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item">Flash Pre-Read Template</a>
+                                <a href="#" class="link-item">July Data Sources</a>
+                                <a href="#" class="link-item">Backup Analysis Tools</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-low">
-                        <div class="task-title">Flash Deck Updates July 3rd (if required)</div>
-                        <span class="task-owner">Malcolm</span>
+                    <div class="task-card priority-high" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Flash Deck Updates June 26th</div>
+                                <span class="task-owner">Windy</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item">Current Flash Deck</a>
+                                <a href="#" class="link-item">Update Guidelines</a>
+                                <a href="#" class="link-item">Design Assets Folder</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card priority-medium">
-                        <div class="task-title">Board Advance Talk Track Coverage</div>
-                        <span class="task-owner">Chenqi</span>
+                    <div class="task-card priority-low" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Flash Deck Updates July 3rd (if required)</div>
+                                <span class="task-owner">Malcolm</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item">Current Flash Deck</a>
+                                <a href="#" class="link-item">July Update Requirements</a>
+                                <a href="#" class="link-item">Backup Templates</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Board Advance Talk Track Coverage</div>
+                                <span class="task-owner">Chenqi</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Related Files & Resources:</div>
+                                <a href="#" class="link-item">Board Presentation Template</a>
+                                <a href="#" class="link-item">Talk Track Guidelines</a>
+                                <a href="#" class="link-item">Previous Board Materials</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -243,20 +445,52 @@
             <div class="section">
                 <h2 class="section-title">🤝 Key Meeting Coverage</h2>
                 <div class="task-grid">
-                    <div class="task-card meeting-card">
-                        <div class="task-title">Flash Review with Hanif</div>
-                        <span class="meeting-date">June 26th</span>
-                        <span class="task-owner">Malcolm</span>
+                    <div class="task-card meeting-card" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Flash Review with Hanif</div>
+                                <span class="meeting-date">June 26th</span>
+                                <span class="task-owner">Malcolm</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Meeting Resources:</div>
+                                <a href="#" class="link-item">Meeting Agenda Template</a>
+                                <a href="#" class="link-item">Flash Review Materials</a>
+                                <a href="#" class="link-item">Previous Meeting Notes</a>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="task-card meeting-card">
-                        <div class="task-title">Flash Review with Hanif (if required)</div>
-                        <span class="meeting-date">July 3rd</span>
-                        <span class="task-owner">Malcolm</span>
+                    <div class="task-card meeting-card" onclick="toggleExpand(this)">
+                        <div class="task-header">
+                            <div class="task-info">
+                                <div class="task-title">Flash Review with Hanif (if required)</div>
+                                <span class="meeting-date">July 3rd</span>
+                                <span class="task-owner">Malcolm</span>
+                            </div>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="task-links">
+                            <div class="links-content">
+                                <div class="links-title">Meeting Resources:</div>
+                                <a href="#" class="link-item">Meeting Agenda Template</a>
+                                <a href="#" class="link-item">July Flash Materials</a>
+                                <a href="#" class="link-item">Backup Discussion Points</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleExpand(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
 </body>
 </html>
