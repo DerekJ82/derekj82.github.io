@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Items & Coverage</title>
+    <title>Derek Johnson - 2025 Performance Summary</title>
     <style>
         * {
             margin: 0;
@@ -13,476 +13,360 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2A2C2E 0%, #4B286D 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
 
         .container {
+            perspective: 1500px;
+            width: 100%;
             max-width: 1200px;
-            margin: 0 auto;
+        }
+
+        .slide-wrapper {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .slide-wrapper.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .slide-back {
+            transform: rotateY(180deg);
         }
 
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #4B286D 0%, #6B4A8D 100%);
             color: white;
-            padding: 30px;
-            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(75, 40, 109, 0.3);
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 300;
+            font-size: 2em;
+            margin-bottom: 5px;
         }
 
-        .header p {
-            font-size: 1.2em;
+        .header h2 {
+            font-size: 1.3em;
+            font-weight: 300;
             opacity: 0.9;
         }
 
-        .content {
-            padding: 40px;
+        .section {
+            margin-bottom: 25px;
+            animation: fadeIn 0.6s ease-in;
         }
 
-        .section {
-            margin-bottom: 40px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section-title {
-            font-size: 1.8em;
-            color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #4facfe;
-            display: flex;
-            align-items: center;
-        }
-
-        .section-title::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #4facfe;
-            border-radius: 50%;
-            margin-right: 15px;
-        }
-
-        .task-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-        }
-
-        .task-card {
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 5px solid #4facfe;
-            transition: all 0.3s ease;
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        .task-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .task-header {
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .task-info {
-            flex: 1;
-        }
-
-        .task-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .task-owner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
+            color: #4B286D;
+            font-size: 1.4em;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #00A400;
             display: inline-block;
-            font-weight: 500;
         }
 
-        .expand-icon {
-            font-size: 1.2em;
-            color: #666;
+        .content-text {
+            color: #2A2C2E;
+            line-height: 1.6;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+
+        .accomplishment {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #00A400;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .accomplishment:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 164, 0, 0.2);
+        }
+
+        .accomplishment h3 {
+            color: #4B286D;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .accomplishment p {
+            color: #2A2C2E;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #4B286D 0%, #6B4A8D 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
             transition: transform 0.3s ease;
         }
 
-        .task-card.expanded .expand-icon {
-            transform: rotate(180deg);
+        .metric-card:hover {
+            transform: scale(1.05);
         }
 
-        .task-links {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: #fff;
-            border-top: 1px solid #e9ecef;
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00A400;
         }
 
-        .task-card.expanded .task-links {
-            max-height: 300px;
+        .metric-label {
+            font-size: 0.85em;
+            margin-top: 5px;
+            opacity: 0.9;
         }
 
-        .links-content {
-            padding: 20px;
-        }
-
-        .links-title {
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 15px;
-            font-size: 0.95em;
-        }
-
-        .link-item {
-            display: block;
-            padding: 8px 12px;
-            margin-bottom: 8px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #495057;
-            transition: all 0.2s ease;
-            border-left: 3px solid #4facfe;
-        }
-
-        .link-item:hover {
-            background: #e9ecef;
-            transform: translateX(5px);
-            color: #333;
-        }
-
-        .link-item::before {
-            content: '🔗';
-            margin-right: 8px;
-        }
-
-        .domo-link::before {
-            content: '📊';
-            margin-right: 8px;
-        }
-
-        .meeting-card {
+        .opportunities {
             background: #fff3cd;
-            border-left-color: #ffc107;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
 
-        .meeting-date {
-            background: #ffc107;
-            color: #333;
-            padding: 5px 12px;
-            border-radius: 20px;
+        .opportunities h4 {
+            color: #856404;
+            margin-bottom: 8px;
+        }
+
+        .opportunities p {
+            color: #856404;
             font-size: 0.9em;
-            display: inline-block;
-            font-weight: 500;
-            margin-right: 10px;
         }
 
-        .priority-high {
-            border-left-color: #dc3545;
+        .flip-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00A400 0%, #00C400 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 164, 0, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
 
-        .priority-medium {
-            border-left-color: #ffc107;
+        .flip-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 164, 0, 0.5);
         }
 
-        .priority-low {
-            border-left-color: #28a745;
+        .summary-box {
+            background: linear-gradient(135deg, #00A400 0%, #00C400 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 8px 20px rgba(0, 164, 0, 0.3);
+        }
+
+        .summary-box p {
+            color: white;
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
-            .task-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
+            .slide {
+                padding: 25px;
             }
 
-            .task-header {
-                padding: 15px;
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header h2 {
+                font-size: 1em;
+            }
+
+            .section-title {
+                font-size: 1.2em;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📋 Work Items & Coverage</h1>
-            <p>Key Deliverables & Meeting Coverage - Click tasks to view related files</p>
-        </div>
+        <div class="slide-wrapper" id="slideWrapper">
+            <!-- Slide 1 -->
+            <div class="slide slide-front">
+                <div class="header">
+                    <h1>Derek Johnson</h1>
+                    <h2>2025 Performance Summary</h2>
+                </div>
 
-        <div class="content">
-            <!-- Key Deliverables Section -->
-            <div class="section">
-                <h2 class="section-title">📋 Key Deliverables</h2>
-                <div class="task-grid">
-                    <div class="task-card priority-high" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">MM Customer Growth YoY vs SMB 30-100 Customer Growth YoY</div>
-                                <span class="task-owner">Chenqi</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="#" class="link-item domo-link">Customer Growth Analysis Dashboard</a>
-                                <a href="#" class="link-item">MM vs SMB Growth Report Template</a>
-                                <a href="#" class="link-item">Historical Growth Data</a>
-                            </div>
-                        </div>
-                    </div>
+                <div class="section">
+                    <h3 class="section-title">Overview</h3>
+                    <p class="content-text">
+                        Building on the strong foundation established in 2024, Derek continued to demonstrate exceptional leadership while expanding his impact across the organization in 2025. His direct, collaborative, and caring leadership style remained a cornerstone of his approach, while he successfully drove new strategic initiatives that enhanced team capabilities, organizational visibility, and business outcomes.
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Key Accomplishments</h3>
                     
-                    <div class="task-card priority-high" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Flash Revamp</div>
-                                <span class="task-owner">Chenqi</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="#" class="link-item">Flash Revamp Project Plan</a>
-                                <a href="#" class="link-item">Current Flash Template</a>
-                                <a href="#" class="link-item">Stakeholder Requirements Doc</a>
-                            </div>
-                        </div>
+                    <div class="accomplishment">
+                        <h3>🤖 AI Adoption & Process Innovation</h3>
+                        <p>Championed the integration of AI tools across his team, positioning them at the forefront of digital transformation. Actively encouraged experimentation with generative AI solutions to streamline forecasting, enhance data analysis, and improve stakeholder communications.</p>
                     </div>
-                    
-                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Senior Strategy Hiring</div>
-                                <span class="task-owner">Tyler</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="#" class="link-item">Job Description Template</a>
-                                <a href="#" class="link-item">Interview Guide</a>
-                                <a href="#" class="link-item">Candidate Pipeline Tracker</a>
-                            </div>
-                        </div>
+
+                    <div class="accomplishment">
+                        <h3>👥 Team Development & Visibility</h3>
+                        <p>Made significant strides in elevating team members' profiles across the organization. Created opportunities for team members like Chenqi to present directly to senior leadership, increasing recognition and developing executive presence.</p>
                     </div>
-                    
-                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Weekly DE Update - WLN Externals</div>
-                                <span class="task-owner">Tyler</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="https://telus.domo.com/page/2139689607" class="link-item domo-link">WLN Externals Dashboard</a>
-                                <a href="https://docs.google.com/spreadsheets/d/1DBfDzcF8DtH14KOFSW5FPotcVDd-hRO7Pc_-w_kXP7c/edit?gid=1966353899#gid=1966353899" class="link-item">DE Metrics Tracking Sheet</a>
-                            </div>
-                        </div>
+
+                    <div class="accomplishment">
+                        <h3>📊 Channel Performance & DRIVE Tool Marketing</h3>
+                        <p>Successfully integrated channel performance analytics and played a pivotal role in marketing the DRIVE tool to stakeholders. Demonstrated the tool's value proposition, driving greater adoption across the business and contributing to improved financial outcomes.</p>
                     </div>
-                    
-                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Public Large vs Other Public for WLS</div>
-                                <span class="task-owner">Malcolm</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="#" class="link-item domo-link">WLS Performance Dashboard</a>
-                                <a href="#" class="link-item">Public Segment Analysis</a>
-                                <a href="#" class="link-item">Competitive Benchmarking Data</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Manager Drive Review with Sales Teams</div>
-                                <span class="task-owner">Kelly</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="#" class="link-item domo-link">Sales Performance Dashboard</a>
-                                <a href="#" class="link-item">Manager Drive Results</a>
-                                <a href="#" class="link-item">Sales Team Feedback Form</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="task-card priority-high" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">June 25th Flash Pre-Read</div>
-                                <span class="task-owner">Windy</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="https://docs.google.com/document/d/1cd-JVvk5HtwIJt-00ATEVOoL965eChDpI3B1p1G-tUY/edit?tab=t.0" class="link-item">Flash Pre-Read Template</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="task-card priority-low" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">July 2nd Flash Pre-Read (if required)</div>
-                                <span class="task-owner">Malcolm</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="https://docs.google.com/document/d/1dwHKIqY2JZjifDB6IpwA1BVXsUK-YKqD4CstktelHBU/edit?tab=t.0" class="link-item">Flash Pre-Read Template</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="task-card priority-high" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Flash Deck Updates June 26th</div>
-                                <span class="task-owner">Windy</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="task-card priority-low" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Flash Deck Updates July 3rd (if required)</div>
-                                <span class="task-owner">Malcolm</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="#" class="link-item">Current Flash Deck</a>
-                                <a href="#" class="link-item">July Update Requirements</a>
-                                <a href="#" class="link-item">Backup Templates</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="task-card priority-medium" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Board Advance Talk Track Coverage</div>
-                                <span class="task-owner">Chenqi</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Related Files & Resources:</div>
-                                <a href="#" class="link-item">Board Presentation Template</a>
-                                <a href="#" class="link-item">Talk Track Guidelines</a>
-                                <a href="#" class="link-item">Previous Board Materials</a>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Leadership Strengths</h3>
+                    <p class="content-text">
+                        <strong>Communication:</strong> Data-driven, articulate, and solution-oriented with executive communications that strike the right balance.<br><br>
+                        <strong>Collaboration:</strong> Actively seeks diverse perspectives, handles conflict respectfully, and ensures alignment across Marketing, Product, Sales, and senior leadership.<br><br>
+                        <strong>Business Knowledge:</strong> Deep understanding of TELUS products (WLN, WLS, IoT) makes him a trusted advisor across the organization.
+                    </p>
                 </div>
             </div>
 
-            <!-- Key Meetings Section -->
-            <div class="section">
-                <h2 class="section-title">🤝 Key Meeting Coverage</h2>
-                <div class="task-grid">
-                    <div class="task-card meeting-card" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Flash Review with Hanif</div>
-                                <span class="meeting-date">June 26th</span>
-                                <span class="task-owner">Malcolm</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
+            <!-- Slide 2 -->
+            <div class="slide slide-back">
+                <div class="header">
+                    <h1>Derek Johnson</h1>
+                    <h2>2025 Performance Summary - Continued</h2>
+                </div>
+
+                <div class="section">
+                    <div class="accomplishment">
+                        <h3>💰 Enhanced P&L Visibility</h3>
+                        <p>Implemented new processes and dashboards that significantly improved P&L transparency. These tools democratized financial information, enabling data-driven decisions across product teams, sales leaders, and senior executives.</p>
+                    </div>
+
+                    <div class="accomplishment">
+                        <h3>📈 Scorecard Performance in Challenging Environment</h3>
+                        <p>Maintained results among the highest on the team despite broader market challenges. Demonstrated resilience, strategic thinking, and effective stakeholder management during a difficult business environment.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Team Engagement Excellence</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">9.3</div>
+                            <div class="metric-label">Trust with Manager<br>(↑ from 7.5)</div>
                         </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Meeting Resources:</div>
-                                <a href="#" class="link-item">Meeting Agenda Template</a>
-                                <a href="#" class="link-item">Flash Review Materials</a>
-                                <a href="#" class="link-item">Previous Meeting Notes</a>
-                            </div>
+                        <div class="metric-card">
+                            <div class="metric-value">8.9</div>
+                            <div class="metric-label">Relationship with Manager</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">8.6</div>
+                            <div class="metric-label">Personal Growth<br>(↑ from 7.9)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">8.8</div>
+                            <div class="metric-label">Collaboration</div>
                         </div>
                     </div>
-                    
-                    <div class="task-card meeting-card" onclick="toggleExpand(this)">
-                        <div class="task-header">
-                            <div class="task-info">
-                                <div class="task-title">Flash Review with Hanif (if required)</div>
-                                <span class="meeting-date">July 3rd</span>
-                                <span class="task-owner">Malcolm</span>
-                            </div>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="task-links">
-                            <div class="links-content">
-                                <div class="links-title">Meeting Resources:</div>
-                                <a href="#" class="link-item">Meeting Agenda Template</a>
-                                <a href="#" class="link-item">July Flash Materials</a>
-                                <a href="#" class="link-item">Backup Discussion Points</a>
-                            </div>
-                        </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Areas of Opportunity</h3>
+                    <div class="opportunities">
+                        <h4>Recognition Cadence</h4>
+                        <p>More frequent and visible recognition would further energize the team (Recognition score: 6.6, down from 7.3).</p>
                     </div>
+                    <div class="opportunities">
+                        <h4>Workload Management</h4>
+                        <p>Continue evaluating new work requests against team capacity to ensure sustainable workloads and protect team wellness.</p>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h3 style="margin-bottom: 10px;">Summary</h3>
+                    <p>Derek continues to be a tremendous asset to TELUS. His 2025 performance demonstrates growth beyond his already strong 2024 baseline—expanding into AI enablement, team visibility, and cross-functional tool adoption while maintaining the collaborative, data-driven, and caring leadership style that defines his approach. The combination of strong business results, exceptional team engagement metrics, and strategic innovation positions Derek as a key leader for TELUS's future.</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <button class="flip-button" onclick="flipSlide()">
+        <span id="buttonText">Next Slide →</span>
+    </button>
+
     <script>
-        function toggleExpand(card) {
-            card.classList.toggle('expanded');
+        function flipSlide() {
+            const wrapper = document.getElementById('slideWrapper');
+            const buttonText = document.getElementById('buttonText');
+            
+            wrapper.classList.toggle('flipped');
+            
+            if (wrapper.classList.contains('flipped')) {
+                buttonText.textContent = '← Previous Slide';
+            } else {
+                buttonText.textContent = 'Next Slide →';
+            }
         }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft' || event.key === ' ') {
+                flipSlide();
+            }
+        });
     </script>
 </body>
 </html>
