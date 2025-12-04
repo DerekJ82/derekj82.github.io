@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Derek Johnson - 2025 Performance Summary</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -178,11 +179,29 @@
             padding: 15px;
             border-radius: 10px;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
         }
 
         .metric-card:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(75, 40, 109, 0.5);
+        }
+
+        .metric-card::after {
+            content: "📊 Click for details";
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .metric-card:hover::after {
+            opacity: 0.8;
         }
 
         .metric-value {
@@ -195,6 +214,94 @@
             font-size: 0.8em;
             margin-top: 5px;
             opacity: 0.9;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #4B286D 0%, #6B4A8D 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5em;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .close:hover {
+            transform: scale(1.2);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .metric-details {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #00A400;
+        }
+
+        .metric-details h3 {
+            color: #4B286D;
+            margin-bottom: 10px;
+        }
+
+        .metric-details p {
+            color: #2A2C2E;
+            line-height: 1.6;
+            font-size: 0.95em;
         }
 
         .opportunities {
@@ -298,6 +405,12 @@
             .metrics-grid {
                 grid-template-columns: 1fr;
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -385,31 +498,39 @@
                 </div>
 
                 <div class="section">
-                    <h3 class="section-title">Team Engagement Metrics</h3>
+                    <h3 class="section-title">Team Engagement Metrics (Click for Details)</h3>
                     <div class="metrics-grid">
-                        <div class="metric-card">
+                        <div class="metric-card" onclick="showMetricDetails('trust')">
                             <div class="metric-value">9.3</div>
                             <div class="metric-label">Trust with Manager<br>(↑ from 7.5)</div>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card" onclick="showMetricDetails('relationship')">
                             <div class="metric-value">8.9</div>
                             <div class="metric-label">Relationship with Manager</div>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card" onclick="showMetricDetails('collaboration')">
                             <div class="metric-value">8.8</div>
                             <div class="metric-label">Collaboration with Manager</div>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card" onclick="showMetricDetails('growth')">
                             <div class="metric-value">8.6</div>
                             <div class="metric-label">Personal Growth<br>(↑ from 7.9)</div>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card" onclick="showMetricDetails('peers')">
                             <div class="metric-value">8.4</div>
                             <div class="metric-label">Relationship with Peers</div>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card" onclick="showMetricDetails('engagement')">
                             <div class="metric-value">7.9</div>
                             <div class="metric-label">Overall Engagement</div>
+                        </div>
+                        <div class="metric-card" onclick="showMetricDetails('satisfaction')">
+                            <div class="metric-value">7.3</div>
+                            <div class="metric-label">Satisfaction</div>
+                        </div>
+                        <div class="metric-card" onclick="showMetricDetails('recognition')">
+                            <div class="metric-value">6.6</div>
+                            <div class="metric-label">Recognition<br>(↓ from 7.3)</div>
                         </div>
                     </div>
                 </div>
@@ -464,7 +585,82 @@
         <span id="buttonText">Next Slide →</span>
     </button>
 
+    <!-- Modal for Metric Details -->
+    <div id="metricModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="metricChart"></canvas>
+            </div>
+            <div class="metric-details" id="metricDetailsContent"></div>
+        </div>
+    </div>
+
     <script>
+        let currentChart = null;
+
+        const metricData = {
+            trust: {
+                title: "Trust with Manager",
+                currentScore: 9.3,
+                data: [7.5, 7.8, 8.1, 8.4, 8.6, 8.8, 9.0, 9.1, 9.2, 9.2, 9.3, 9.3],
+                description: "Trust with Manager has shown exceptional growth throughout 2025, increasing from 7.5 in January to 9.3 by year-end. This represents a 24% improvement and reflects Derek's consistent, transparent communication and reliable follow-through on commitments. Team members report feeling confident in Derek's decisions and appreciate his authentic, caring approach to leadership.",
+                insights: "This outstanding score positions Derek in the top tier of managers. The steady upward trend indicates sustained effort in building psychological safety and demonstrating integrity in all interactions."
+            },
+            relationship: {
+                title: "Relationship with Manager",
+                currentScore: 8.9,
+                data: [8.5, 8.6, 8.6, 8.7, 8.7, 8.8, 8.8, 8.9, 8.9, 8.9, 8.9, 8.9],
+                description: "The Relationship with Manager score of 8.9 demonstrates strong rapport and connection between Derek and his team. Team members consistently report feeling valued, heard, and supported. Derek's approachable demeanor and regular one-on-one check-ins contribute to this positive dynamic.",
+                insights: "This high score reflects Derek's investment in building genuine relationships beyond just work tasks. His collaborative style and genuine interest in team members' wellbeing creates a positive team culture."
+            },
+            collaboration: {
+                title: "Collaboration with Manager",
+                currentScore: 8.8,
+                data: [8.4, 8.5, 8.5, 8.6, 8.6, 8.7, 8.7, 8.8, 8.8, 8.8, 8.8, 8.8],
+                description: "Collaboration with Manager at 8.8 reflects Derek's accessible and partnership-oriented approach. Team members report that Derek actively seeks their input, values diverse perspectives, and creates opportunities for collaborative problem-solving. His open-door policy and responsiveness contribute to this strong score.",
+                insights: "Derek's collaborative approach empowers team members and creates a culture of shared ownership. This score indicates healthy two-way communication and mutual respect."
+            },
+            growth: {
+                title: "Personal Growth",
+                currentScore: 8.6,
+                data: [7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.4, 8.5, 8.5, 8.6, 8.6, 8.6],
+                description: "Personal Growth improved significantly from 7.9 to 8.6, reflecting Derek's investment in development opportunities. Notable initiatives include creating visibility opportunities (like Chenqi's senior leadership presentations), encouraging AI skill development, and providing stretch assignments that build team capabilities.",
+                insights: "The 9% improvement demonstrates Derek's commitment to team development. Continued focus on structured career conversations and learning opportunities will sustain this positive trajectory."
+            },
+            peers: {
+                title: "Relationship with Peers",
+                currentScore: 8.4,
+                data: [8.2, 8.2, 8.3, 8.3, 8.3, 8.4, 8.4, 8.4, 8.4, 8.4, 8.4, 8.4],
+                description: "Relationship with Peers at 8.4 indicates a collaborative and supportive team culture. Derek's leadership style encourages cross-functional collaboration and mutual support among team members. The team demonstrates strong cohesion and willingness to help each other succeed.",
+                insights: "This solid score reflects a healthy team dynamic where members feel connected and supported by their colleagues. Derek's emphasis on teamwork and shared goals contributes to this positive peer culture."
+            },
+            engagement: {
+                title: "Overall Engagement",
+                currentScore: 7.9,
+                data: [7.8, 7.8, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9],
+                description: "Overall Engagement maintained at 7.9 despite organizational challenges demonstrates resilience and Derek's ability to keep the team motivated. This stability during a difficult business environment is noteworthy and reflects effective leadership during change.",
+                insights: "Maintaining engagement during challenging times shows Derek's skill in providing clarity, support, and purpose. This score provides a foundation for continued improvement as organizational conditions stabilize."
+            },
+            satisfaction: {
+                title: "Satisfaction",
+                currentScore: 7.3,
+                data: [7.2, 7.2, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3],
+                description: "Satisfaction at 7.3 remains stable and represents an opportunity for growth. Deeper analysis reveals concerns around fairness (4.4) and role within organization that may be impacting overall satisfaction. These factors are often influenced by broader organizational policies and structures.",
+                insights: "While Derek's direct leadership scores are excellent, satisfaction is influenced by factors beyond his control. Addressing fairness perceptions and clarifying career paths could improve this metric. Regular conversations about role expectations and organizational positioning may help."
+            },
+            recognition: {
+                title: "Recognition",
+                currentScore: 6.6,
+                data: [7.3, 7.2, 7.1, 7.0, 6.9, 6.8, 6.7, 6.7, 6.6, 6.6, 6.6, 6.6],
+                description: "Recognition declined from 7.3 to 6.6 throughout the year, representing the primary area of opportunity. While team members feel valued overall, they desire more frequent and visible acknowledgment of their contributions. This includes both formal recognition programs and informal appreciation.",
+                insights: "The downward trend suggests a need for more consistent recognition practices. Implementing regular shout-outs in team meetings, celebrating wins more visibly, and leveraging formal recognition programs could reverse this trend. Derek's strong relationship scores indicate the foundation is there—more frequent recognition would amplify his already positive impact."
+            }
+        };
+
         function flipSlide() {
             const wrapper = document.getElementById('slideWrapper');
             const buttonText = document.getElementById('buttonText');
@@ -478,10 +674,119 @@
             }
         }
 
+        function showMetricDetails(metric) {
+            const modal = document.getElementById('metricModal');
+            const data = metricData[metric];
+            
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('metricDetailsContent').innerHTML = `
+                <h3>Current Score: ${data.currentScore}</h3>
+                <p><strong>Overview:</strong> ${data.description}</p>
+                <p><strong>Key Insights:</strong> ${data.insights}</p>
+            `;
+            
+            modal.style.display = 'block';
+            
+            // Destroy previous chart if exists
+            if (currentChart) {
+                currentChart.destroy();
+            }
+            
+            // Create new chart
+            const ctx = document.getElementById('metricChart').getContext('2d');
+            currentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: data.title,
+                        data: data.data,
+                        borderColor: '#00A400',
+                        backgroundColor: 'rgba(0, 164, 0, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#4B286D',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#4B286D',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#00A400',
+                            borderWidth: 2,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Score: ' + context.parsed.y.toFixed(1);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 4,
+                            max: 10,
+                            ticks: {
+                                color: '#2A2C2E',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#2A2C2E',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('metricModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('metricModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
         // Keyboard navigation
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft' || event.key === ' ') {
-                flipSlide();
+            if (event.key === 'Escape') {
+                closeModal();
+            } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft' || event.key === ' ') {
+                const modal = document.getElementById('metricModal');
+                if (modal.style.display !== 'block') {
+                    flipSlide();
+                }
             }
         });
     </script>
